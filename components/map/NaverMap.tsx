@@ -7,6 +7,7 @@ import { getMarkerColor } from '@/lib/utils';
 interface NaverMapProps {
   buildings: BuildingData[];
   onMarkerClick?: (building: BuildingData) => void;
+  mapTypeId?: string;
 }
 
 declare global {
@@ -15,7 +16,7 @@ declare global {
   }
 }
 
-export default function NaverMap({ buildings, onMarkerClick }: NaverMapProps) {
+export default function NaverMap({ buildings, onMarkerClick, mapTypeId = 'NORMAL' }: NaverMapProps) {
   const mapRef = useRef<HTMLDivElement>(null);
   const [map, setMap] = useState<any>(null);
   const [markers, setMarkers] = useState<any[]>([]);
@@ -34,6 +35,7 @@ export default function NaverMap({ buildings, onMarkerClick }: NaverMapProps) {
       zoomControlOptions: {
         position: window.naver.maps.Position.TOP_RIGHT,
       },
+      mapTypeControl: false,
     };
 
     const newMap = new window.naver.maps.Map(mapRef.current, mapOptions);
@@ -102,6 +104,13 @@ export default function NaverMap({ buildings, onMarkerClick }: NaverMapProps) {
       newMarkers.forEach((marker) => marker.setMap(null));
     };
   }, [map, buildings, onMarkerClick]);
+
+  useEffect(() => {
+    if (!map) return;
+    
+    const mapType = window.naver.maps.MapTypeId[mapTypeId as keyof typeof window.naver.maps.MapTypeId] || window.naver.maps.MapTypeId.NORMAL;
+    map.setMapTypeId(mapType);
+  }, [map, mapTypeId]);
 
   return (
     <div 

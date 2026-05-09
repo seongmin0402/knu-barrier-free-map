@@ -9,6 +9,7 @@ import DetailPanel from '@/components/map/DetailPanel';
 import Toggle from '@/components/ui/Toggle';
 import SearchBar from '@/components/ui/SearchBar';
 import FilterPanel from '@/components/ui/FilterPanel';
+import MapTypeSelector from '@/components/ui/MapTypeSelector';
 
 const NaverMap = dynamic(() => import('@/components/map/NaverMap'), {
   ssr: false,
@@ -27,6 +28,8 @@ export default function Home() {
   const [selectedBuilding, setSelectedBuilding] = useState<BuildingData | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [showFilters, setShowFilters] = useState(false);
+  const [showMapTypes, setShowMapTypes] = useState(false);
+  const [mapTypeId, setMapTypeId] = useState('NORMAL');
   const [filters, setFilters] = useState<FacilityFilter>({
     wheelchair: false,
     elevator: false,
@@ -115,6 +118,16 @@ export default function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
                 </svg>
               </button>
+              <button
+                onClick={() => setShowMapTypes(!showMapTypes)}
+                className="p-2 hover:bg-gray-100 rounded-lg transition-colors focus-visible"
+                aria-label="지도 유형 변경"
+                title="지도 유형"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                </svg>
+              </button>
               <Toggle
                 label="고대비"
                 checked={isHighContrast}
@@ -144,10 +157,22 @@ export default function Home() {
             <NaverMap
               buildings={filteredBuildings}
               onMarkerClick={(building) => setSelectedBuilding(building)}
+              mapTypeId={mapTypeId}
             />
             {showFilters && (
               <div className="absolute top-4 left-4 z-10">
                 <FilterPanel filters={filters} onChange={setFilters} />
+              </div>
+            )}
+            {showMapTypes && (
+              <div className="absolute top-4 left-4 z-10" style={{ marginTop: showFilters ? '420px' : '0' }}>
+                <MapTypeSelector
+                  currentType={mapTypeId}
+                  onTypeChange={(type) => {
+                    setMapTypeId(type);
+                    setShowMapTypes(false);
+                  }}
+                />
               </div>
             )}
             <DetailPanel
