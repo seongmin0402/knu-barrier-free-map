@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <title>네이버 지도 테스트</title>
+    <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=82qb1njpxy"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        #map {
+            width: 100%;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    
+    <script>
+        // 지도를 삽입할 HTML 요소 또는 HTML 요소의 id를 지정합니다.
+        var mapDiv = document.getElementById('map');
+        
+        // 공주대학교 신관캠퍼스 좌표
+        var mapOptions = {
+            center: new naver.maps.LatLng(36.4685, 127.1410), // 공주대학교
+            zoom: 16
+        };
+        
+        // 지도 생성
+        var map = new naver.maps.Map(mapDiv, mapOptions);
+        
+        // 테스트 마커 추가
+        var marker = new naver.maps.Marker({
+            position: new naver.maps.LatLng(36.4663412, 127.1385781), // 인문사회과학대학관
+            map: map,
+            title: '인문사회과학대학관'
+        });
+        
+        console.log('지도 로드 성공!');
+    </script>
+</body>
+</html>
