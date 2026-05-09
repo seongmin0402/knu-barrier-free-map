@@ -1,0 +1,23 @@
+[
+  {
+    "id": "building-1",
+    "lat": 36.4663412,
+    "lng": 127.1385781,
+    "building_name": "공주대학교 인문사회과학대학관",
+    "floor": "5F",
+    "wheelchair_access": true,
+    "elevator_available": true,
+    "braille_available": false,
+    "toilet_available": true,
+    "auto_door_available": true,
+    "threshold_present": true,
+    "parking_capacity": 4,
+    "parking_distance_entrance_m": 3,
+    "ramp_available": true,
+    "description": "모든 층에 승강기 o\nB1 - 장애인 화장실 o, 자동문 o, 전용 주차장 2대 가능\n1F - 장애인 화장실 o, 자동문 o, 입구 경사로 o, 전용 주차장 2대 가능\n2F - 건물 내 서측에 경사로 o\n2F~4F - 건물 내 동측에 경사 o\n3F~5F - 방화문으로 인한 문턱 o",
+    "floorPhotoSummary": "B1:1장 | 1F:6장 | 2F:2장 | 3F:0장 | 4F:0장 | 5F:0장",
+    "floorPhotoImageNames": "B1[KakaoTalk_20260415_163345672.jpg] | 1F[KakaoTalk_20260415_163743037.jpg+KakaoTalk_20260415_163743037_01.jpg+KakaoTalk_20260415_163743037_02.jpg+KakaoTalk_20260415_163743037_03.jpg+KakaoTalk_20260415_163743037_04.jpg+KakaoTalk_20260415_164529777_01.jpg] | 2F[KakaoTalk_20260415_164529777.jpg+KakaoTalk_20260427_194637279.jpg] | 3F[] | 4F[] | 5F[]",
+    "floorPhotoGroupsJson": "[{\"floor\":\"B1\",\"imageFiles\":[{\"url\":\"https://ghdcjmmxfeaedsspterz.supabase.co/storage/v1/object/public/barrier-images/barrier/1776241764284_6asila_KakaoTalk_20260415_163345672.jpg\",\"name\":\"1776241764284_6asila_KakaoTalk_20260415_163345672.jpg\",\"path\":\"barrier/1776241764284_6asila_KakaoTalk_20260415_163345672.jpg\",\"type\":\"image/jpeg\",\"bucket\":\"barrier-images\",\"originalName\":\"KakaoTalk_20260415_163345672.jpg\"}],\"imageNames\":[\"1776241764284_6asila_KakaoTalk_20260415_163345672.jpg\"]}]",
+    "imageNames": "1776241764284_6asila_KakaoTalk_20260415_163345672.jpg|1776241766788_1j4ev7_KakaoTalk_20260415_163743037.jpg"
+  }
+]
