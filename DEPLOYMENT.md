@@ -23,7 +23,7 @@ git commit -m "feat: 공주대학교 배리어프리 맵 초기 버전"
 
 1. [GitHub](https://github.com/new) 접속
 2. Repository name: `knu-barrier-free-map` 입력
-3. Description: `공주대학교 신관캠퍼스 배리어프리 맵` 입력
+3. Description: `공주대학교맵 신관캠퍼스 배리어프리 ` 입력
 4. Public 또는 Private 선택
 5. "Create repository" 클릭
 
@@ -80,7 +80,7 @@ Vercel 배포 후 프로덕션 URL을 네이버 클라우드에 추가:
 
 | Name | Value |
 |------|-------|
-| `NEXT_PUBLIC_NAVER_MAP_CLIENT_ID` | 네이버 지도 API Client ID |
+| `   ` | 네이버 지도 API Client ID |
 
 선택사항 (Firebase 사용 시):
 | Name | Value |
@@ -149,11 +149,77 @@ Vercel이 Let's Encrypt를 통해 SSL 인증서를 자동으로 발급합니다 
 
 ## 문제 해결
 
-### 지도가 표시되지 않는 경우
+### 지도가 표시되지 않는 경우 (Authentication Failed 오류)
 
-1. 브라우저 개발자 도구 (F12) > Console 확인
-2. 네이버 지도 API 키가 올바른지 확인
-3. 네이버 클라우드에 프로덕션 URL이 등록되었는지 확인
+**증상**: 브라우저 콘솔에 "NAVER Maps JavaScript API v3 네이버 지도 Open API 인증이 실패하였습니다. * Error Code / Error Message: 200 / Authentication Failed" 오류가 표시됩니다.
+
+**원인**: 네이버 클라우드 플랫폼에 배포된 URL이 등록되지 않았거나, Vercel 환경 변수가 올바르게 설정되지 않았습니다.
+
+**해결 방법**:
+
+1. **네이버 클라우드 플랫폼 설정 확인**:
+   - [네이버 클라우드 플랫폼 콘솔](https://console.ncloud.com/) 접속
+   - AI·NAVER API > Application > 해당 지도 애플리케이션 선택
+   - "Web 서비스 URL" 섹션에 다음 URL들을 **모두** 등록:
+     ```
+     https://knu-barrier-free-map.vercel.app
+     https://*.vercel.app
+     http://localhost:3000
+     ```
+   - 변경사항 **저장** 클릭
+   - 설정 변경 후 **5-10분 정도 대기** (시스템 전파 시간)
+
+2. **Vercel 환경 변수 확인**:
+   - Vercel 프로젝트 > Settings > Environment Variables
+   - `NEXT_PUBLIC_NAVER_MAP_CLIENT_ID` 값이 정확히 `82qb1njpxy`인지 확인 (공백 없이)
+   - 환경 변수 변경 후 **Deployments 탭에서 "Redeploy" 실행**
+
+3. **브라우저 캐시 삭제**:
+   - Ctrl + Shift + Delete로 브라우저 캐시 삭제
+   - 또는 시크릿 모드(Incognito)로 접속하여 테스트
+
+4. **Vercel 배포 URL 확인**:
+   - Vercel은 여러 개의 배포 URL을 자동 생성합니다:
+     - `https://knu-barrier-free-map.vercel.app` (프로덕션)
+     - `https://knu-barrier-free-map-git-main-*.vercel.app` (브랜치별)
+     - `https://knu-barrier-free-map-*-projects.vercel.app` (프로젝트별)
+   - 위의 `https://*.vercel.app` 와일드카드 패턴이 모든 URL을 커버해야 합니다
+
+**체크리스트**:
+- [ ] 네이버 클라우드 콘솔에 배포 URL 등록했는가?
+- [ ] 등록 후 '저장' 버튼을 눌렀는가?
+- [ ] Vercel 환경 변수가 올바르게 설정되어 있는가?
+- [ ] 환경 변수 변경 후 재배포했는가?
+- [ ] 설정 변경 후 5-10분 정도 대기했는가?
+
+### Zustand 경고 메시지 ([DEPRECATED] Default export is deprecated)
+
+**증상**: 브라우저 콘솔에 "[DEPRECATED] Default export is deprecated. Instead use `import { create } from 'zustand'`." 경고가 표시됩니다.
+
+**원인**: Next.js나 다른 의존성 패키지가 내부적으로 구버전 Zustand import 방식을 사용하고 있습니다.
+
+**해결 방법**: 
+- 이 경고는 **지도가 로딩되지 않는 직접적인 원인이 아닙니다**.
+- 프로젝트 자체에서 Zustand를 직접 사용하지 않으므로, 의존성 패키지가 업데이트될 때까지 무시해도 됩니다.
+- 만약 프로젝트에서 Zustand를 사용하는 경우, import 구문을 다음과 같이 수정하면 됩니다:
+  ```typescript
+  // 기존 (deprecated)
+  import create from 'zustand'
+  
+  // 수정 (권장)
+  import { create } from 'zustand'
+  ```
+
+### Chrome 쿠키 관련 메시지
+
+**증상**: "Chrome is moving towards a new experience that allows users to choose to browse without third-party cookies." 메시지가 표시됩니다.
+
+**원인**: 구글 크롬 브라우저가 보안 강화를 위해 제3자 쿠키(Third-party cookies) 지원을 중단할 예정이라는 일반적인 공지입니다.
+
+**해결 방법**:
+- 이 메시지는 **지도가 로딩되지 않는 직접적인 원인이 아닙니다**.
+- 네이버 지도 API 인증 문제(위의 "지도가 표시되지 않는 경우" 참조)만 해결되면, 이 메시지가 표시되어도 지도는 정상적으로 작동합니다.
+- 브라우저의 일반적인 보안 정책 변경 안내이므로 무시해도 됩니다.
 
 ### 빌드 실패 시
 
